@@ -7,7 +7,8 @@ const bcrypt = require('bcryptjs');
 exports.postCoordinador = async (req,res,next) => {
     try {
         const data = req.body
-        data.password = await bcrypt.hash(password, 10)
+        console.log(data)
+        data.password = await bcrypt.hash(data.password, 10)
         const coordinador = await Coordinador.create(data)
 
         return res.status(200).json({

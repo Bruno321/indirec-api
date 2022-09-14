@@ -24,7 +24,7 @@ router.post("/",
 /**
  * Solicita informacion sobre un deportista
  */
- router.get("/deportista:expediente",
+ router.get("/:expediente",
 	authorization,
 	deportistasController.getDeportista)
 

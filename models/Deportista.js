@@ -26,7 +26,6 @@ const Deportista = db.define('deportista', {
         type:Sequelize.INTEGER(1),
         // 0: activo, 1: inactivo
         defaultValue: 0,
-        allowNull: false,
     },
 })
 

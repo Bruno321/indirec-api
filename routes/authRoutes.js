@@ -9,7 +9,7 @@ const { authController } = require("../controllers");
 /**
  * Inicia sesion de un coordinador
  */
-router.post("/coordinador", authController.login);
+router.post("/", authController.login);
 
 
 module.exports = router;

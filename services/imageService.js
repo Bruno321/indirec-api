@@ -84,8 +84,19 @@
      };
  
  }
+
+ const getImage = (fileName) => {
+	let pathImg = path.join(__dirname, `../uploads/${fileName}`);
+
+	return {
+		ok: true,
+		message: null,
+		data: pathImg
+	};
+}
  
  module.exports = {
      uploadImage,
-     deleteImage
+     deleteImage,
+     getImage,
  };

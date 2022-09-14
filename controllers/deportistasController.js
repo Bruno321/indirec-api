@@ -58,9 +58,11 @@ exports.postDeportista = async (req,res,next) => {
             return response.data
         }
 
-        data.fotoIdentificacionOficial = subirImagen(req.files?.fotoIdentificacionOficial) 
-        data.foto = subirImagen(req.files?.foto) 
-        data.fotoCardex = subirImagen(req.files?.fotoCardex) 
+   
+
+        data.fotoIdentificacionOficial = await subirImagen(req.files?.fotoIdentificacionOficial) 
+        data.foto = await subirImagen(req.files?.foto) 
+        data.fotoCardex = await subirImagen(req.files?.fotoCardex) 
 
         const deportista = await Deportista.create(data)
 
