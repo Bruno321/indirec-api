@@ -28,4 +28,12 @@ router.post("/",
 	authorization,
 	deportistasController.getDeportista)
 
+/**
+ * Genera el PDF dinamico de los deportistas
+ * @TODO por equipo
+ */
+ router.get("/pdf",
+	authorization,
+	deportistasController.getDeportistasPDF)
+
  module.exports = router;

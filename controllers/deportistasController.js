@@ -2,6 +2,8 @@ const { Deportista } = require("../models");
 
 const { imagesService } = require("../services");
 
+const { pdfService } = require("../services/");
+
 /* Devuelve todos los deportistas */
 exports.getDeportistas = async (req,res,next) => {
     try {
@@ -72,6 +74,31 @@ exports.postDeportista = async (req,res,next) => {
             data: deportista
         });
 
+    } catch(e) {
+        console.log(e)
+        return res.status(500).json({
+            ok: false,
+            message: "Algo salio mal"
+        });
+    }
+}
+
+/* Genera el PDF dinamico de los deportistas */
+exports.getDeportistasPDF = async (req,res,next) => {
+    try {
+        // TODO con deporte
+        const deportistas = await Deportista.findAll()
+        const stream = res.writeHead(200, {
+            'Content-Type': 'application/pdf',
+            // nombre del equipo
+            'Content-Disposition': `attachment;filename=deportistas.pdf`
+            
+        });
+        pdfService.buildPDF(
+            (chunk) => stream.write(chunk),
+            () => stream.end(),
+            deportistas
+        )
     } catch(e) {
         console.log(e)
         return res.status(500).json({
