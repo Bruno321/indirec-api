@@ -8,6 +8,7 @@ const Coordinador = db.define('coordinador', {
         autoIncrement: true
     },
     expediente: {type: Sequelize.STRING(32),allowNull: false},
+    email: {type: Sequelize.STRING(32),allowNull: false},
     nombreCompleto: {type: Sequelize.STRING(100),allowNull: false},
     password:{type: Sequelize.STRING(100), allowNull:false},
     fechaDadoDeAlta: {type: Sequelize.DATEONLY(64), defaultValue: Sequelize.NOW},
