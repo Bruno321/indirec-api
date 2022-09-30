@@ -9,8 +9,8 @@ const Asistencia = db.define('asistencia', {
         autoIncrement: true
     },
     fecha: {type: Sequelize.DATEONLY(64), defaultValue: Sequelize.NOW},
-    horaEntrada: {type: Sequelize.DATE,allowNull: false},
-    horaSalida: {type: Sequelize.DATE,allowNull: false},
+    horaEntrada: {type: Sequelize.DATE,allowNull: true},
+    horaSalida: {type: Sequelize.DATE,allowNull: true},
 })
 
 Asistencia.belongsTo(Deportista,{

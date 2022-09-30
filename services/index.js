@@ -1,7 +1,7 @@
 const imagesService = require('./imageService')
-const pdfService = require("./pdfService");
+const deportistasPdfService = require("./deportistasPdfService");
 
 module.exports = {
     imagesService,
-    pdfService
+    deportistasPdfService
 }

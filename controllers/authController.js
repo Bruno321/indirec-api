@@ -7,8 +7,8 @@ const tokenKey = process.env.PORT || 'debugKey'
 
 exports.login = async (req,res,next) => {
     try {
-        const {expediente,password} = req.body
-        const coordinador = await Coordinador.findOne({where: {expediente,activo:0}})
+        const {email,password} = req.body
+        const coordinador = await Coordinador.findOne({where: {email,activo:0}})
         if (!coordinador){
             return res.status(401).json({
                 ok: false,
@@ -34,7 +34,7 @@ exports.login = async (req,res,next) => {
     
         return res.status(200).json({
             ok: true,
-            message: token,
+            token: token,
         });
     } catch (e) {
         console.log(e)

@@ -14,7 +14,7 @@ exports.postCoordinador = async (req,res,next) => {
         return res.status(200).json({
             ok: true,
             message: "Coordinador registrado correctamente",
-            data: coordinador
+            // data: coordinador
         });
 
     } catch(e) {

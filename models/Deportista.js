@@ -22,6 +22,8 @@ const Deportista = db.define('deportista', {
         allowNull:false
     },
     numSeguroSocial: {type: Sequelize.STRING(100), allowNull:false},
+    numJugador: {type: Sequelize.INTEGER(1), allowNull:false},
+    deporte: {type: Sequelize.STRING(100), allowNull:false}, 
     correo:{type: Sequelize.STRING(80), allowNull:false},
     telefono: {type: Sequelize.STRING(32), allowNull:false},
     telefonoEmergencia: {type: Sequelize.STRING(32), allowNull:false},

@@ -1,13 +1,13 @@
-const { Deportista } = require("../models");
+const { Deportista, Asistencia } = require("../models");
 
 const { imagesService } = require("../services");
 
-const { pdfService } = require("../services/");
+const { deportistasPdfService } = require("../services/");
 
 /* Devuelve todos los deportistas */
 exports.getDeportistas = async (req,res,next) => {
     try {
-        const deportistas = Deportista.findAll()
+        const deportistas = await Deportista.findAll()
         return res.status(200).json({
             ok: true,
             data: deportistas
@@ -26,7 +26,7 @@ exports.getDeportistas = async (req,res,next) => {
 exports.getDeportista = async (req,res,next) => {
     try {
         const {expediente} = req.params
-        const deportista = Deportista.findOne({where:{expediente}})
+        const deportista = await Deportista.findOne({where:{expediente}})
         return res.status(200).json({
             ok: true,
             data: deportista
@@ -100,6 +100,45 @@ exports.getDeportistasPDF = async (req,res,next) => {
             deportistas
         )
     } catch(e) {
+        console.log(e)
+        return res.status(500).json({
+            ok: false,
+            message: "Algo salio mal"
+        });
+    }
+}
+
+/* Obtiene todas las asistencias */
+exports.getAsistencia = async (req,res,next) => {
+    try {
+        const asistencias = await Asistencia.findAll()
+        return res.status(200).json({
+            ok: true,
+            data: asistencias
+        });
+    } catch(e){
+        console.log(e)
+        return res.status(500).json({
+            ok: false,
+            message: "Algo salio mal"
+        });
+    }
+}
+
+/* Registra una asistencia */
+exports.postAsistencia = async (req,res,next) => {
+    try {
+        const {deportistaId,hora} = req.body
+        //la Id del deportista sea la del que solicita
+        //la fecha sea de hoy, hay que ver en q formato viene la fecha para poder parsearla y compararla
+        //usar local time?
+        const asistencia = Asistencia.findOne({where:{deportistaId}})
+        //Si encuentra es porq es su segunda request
+        //si no encuentra es porque es su primera
+        //si encuentra y los campos ya tienen valores ya paso lista asi que se niega 
+        
+
+    } catch(e){
         console.log(e)
         return res.status(500).json({
             ok: false,

@@ -20,6 +20,20 @@
 router.post("/",
 	authorization,
 	deportistasController.postDeportista)
+
+/**
+ * Solicita todas las asistencias
+ */
+ router.get("/asistencia",
+	authorization,
+	deportistasController.getAsistencia)
+
+/**
+ * Registra la asistencia de un deportista
+ */
+ router.post("/asistencia",
+	authorization,
+	deportistasController.postAsistencia)
  
 /**
  * Solicita informacion sobre un deportista
