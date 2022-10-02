@@ -1,3 +1,4 @@
+const moment = require("moment/moment");
 const { Deportista, Asistencia } = require("../models");
 
 const { imagesService } = require("../services");
@@ -111,7 +112,9 @@ exports.getDeportistasPDF = async (req,res,next) => {
 /* Obtiene todas las asistencias */
 exports.getAsistencia = async (req,res,next) => {
     try {
-        const asistencias = await Asistencia.findAll()
+        const asistencias = await Asistencia.findAll({
+            include: [{ model: Deportista, attributes: ['nombres','apellidos'] }],
+        })
         return res.status(200).json({
             ok: true,
             data: asistencias
@@ -128,14 +131,41 @@ exports.getAsistencia = async (req,res,next) => {
 /* Registra una asistencia */
 exports.postAsistencia = async (req,res,next) => {
     try {
-        const {deportistaId,hora} = req.body
+        const {id,fecha} = req.body
         //la Id del deportista sea la del que solicita
         //la fecha sea de hoy, hay que ver en q formato viene la fecha para poder parsearla y compararla
         //usar local time?
-        const asistencia = Asistencia.findOne({where:{deportistaId}})
-        //Si encuentra es porq es su segunda request
-        //si no encuentra es porque es su primera
-        //si encuentra y los campos ya tienen valores ya paso lista asi que se niega 
+        //PARSEAR FECHA
+        let parsedFecha = moment(fecha).format('YYYY-MM-DD')
+        let parsedDateTime = parsedFecha + ' ' + moment(fecha).format('HH:mm:ss')
+        console.log(parsedDateTime)
+        const asistencia = await Asistencia.findOne({where:{deportistaId:id,fecha:parsedFecha}})
+        //No existe por lo tanto esta registrando hora de entrada y hay que crear el elemento
+        if(!asistencia){
+            await Asistencia.create({deportistaId:id,horaEntrada:parsedDateTime})
+            return res.status(200).json({
+                ok: true,
+                message:"Hora de entrada registrada correctamente"
+            }); 
+        }
+        //Ya existe por lo tanto esta registrando hora de salida  y hay que editar el elemento
+        else {
+            if(asistencia.horaSalida===null){
+                asistencia.horaSalida = parsedDateTime
+                await asistencia.save()
+                return res.status(200).json({
+                    ok: true,
+                    message:"Hora de salida registrada correctamente"
+                });
+            //Ya fueron registradas las horas posibles
+            }else{
+                return res.status(400).json({
+                    ok: false,
+                    message:"La hora de entrada y salida ya fueron registradas"
+                });
+            }
+        }
+       
         
 
     } catch(e){

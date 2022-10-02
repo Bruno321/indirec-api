@@ -24,14 +24,14 @@ router.post("/",
 /**
  * Solicita todas las asistencias
  */
- router.get("/asistencia",
+ router.get("/asistencias",
 	authorization,
 	deportistasController.getAsistencia)
 
 /**
  * Registra la asistencia de un deportista
  */
- router.post("/asistencia",
+ router.post("/asistencias",
 	authorization,
 	deportistasController.postAsistencia)
  
