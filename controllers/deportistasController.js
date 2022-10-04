@@ -136,16 +136,20 @@ exports.postAsistencia = async (req,res,next) => {
         //la fecha sea de hoy, hay que ver en q formato viene la fecha para poder parsearla y compararla
         //usar local time?
         //PARSEAR FECHA
+        console.log(id,fecha)
+        console.log(req.body)
         let parsedFecha = moment(fecha).format('YYYY-MM-DD')
         let parsedDateTime = parsedFecha + ' ' + moment(fecha).format('HH:mm:ss')
-        console.log(parsedDateTime)
+        // console.log(parsedDateTime)
         const asistencia = await Asistencia.findOne({where:{deportistaId:id,fecha:parsedFecha}})
+        const deportista = await Deportista.findOne({where:{deportistaId:id},attributes:['nombres','apellidos','foto']})
         //No existe por lo tanto esta registrando hora de entrada y hay que crear el elemento
         if(!asistencia){
             await Asistencia.create({deportistaId:id,horaEntrada:parsedDateTime})
             return res.status(200).json({
                 ok: true,
-                message:"Hora de entrada registrada correctamente"
+                message:"Hora de entrada registrada correctamente",
+                deportista
             }); 
         }
         //Ya existe por lo tanto esta registrando hora de salida  y hay que editar el elemento
@@ -155,7 +159,8 @@ exports.postAsistencia = async (req,res,next) => {
                 await asistencia.save()
                 return res.status(200).json({
                     ok: true,
-                    message:"Hora de salida registrada correctamente"
+                    message:"Hora de salida registrada correctamente",
+                    deportista
                 });
             //Ya fueron registradas las horas posibles
             }else{
