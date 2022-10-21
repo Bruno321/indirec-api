@@ -3,7 +3,7 @@ const { Deportista, Asistencia } = require("../models");
 
 const { imagesService } = require("../services");
 
-const { deportistasPdfService } = require("../services/");
+const { buildPDF } = require("../services/deportistasPdfService");
 
 /* Devuelve todos los deportistas */
 exports.getDeportistas = async (req,res,next) => {
@@ -95,7 +95,7 @@ exports.getDeportistasPDF = async (req,res,next) => {
             'Content-Disposition': `attachment;filename=deportistas.pdf`
             
         });
-        pdfService.buildPDF(
+        buildPDF(
             (chunk) => stream.write(chunk),
             () => stream.end(),
             deportistas
