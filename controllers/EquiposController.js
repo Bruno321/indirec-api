@@ -76,5 +76,6 @@ exports.putEquipo = async (req,res,next) => {
       }).catch(err => {
         res.status(500).send({
           message: "Error actualizando el Equipo con ID:" + id
-        });
+        })
+    });
 }
