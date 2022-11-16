@@ -46,7 +46,7 @@ router.post("/",
  * Genera el PDF dinamico de los deportistas
  * @TODO por equipo
  */
- router.get("/pdf",
+ router.get("/generar/pdf",
 	authorization,
 	deportistasController.getDeportistasPDF)
 

@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize')
 const { db } = require('../config/')
+const Equipo = require('./Equipo')
 
 const Deportista = db.define('deportista', {
     deportistaId: {
@@ -38,5 +39,11 @@ const Deportista = db.define('deportista', {
     },
 })
 
+Deportista.belongsTo(Equipo,{
+    foreignKey: {
+        name: 'equipoId',
+        allowNull: true
+    }
+})
 
 module.exports = Deportista;

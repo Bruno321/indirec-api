@@ -20,8 +20,11 @@
     "moment": "^2.29.4",
     "mysql2": "^2.3.3",
     "pdfkit": "^0.13.0",
+    "pdfkit-construct": "^1.2.3",
+    "pdfkit-table": "^0.1.99",
     "sequelize": "^6.21.6",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.0",
+    "voilab-pdf-table": "^0.5.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.19"

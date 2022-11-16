@@ -9,6 +9,7 @@ const {
 	deportistasRoutes,
 	coordinadoresRoutes,
 	uploadsRoutes,
+	equipoRoutes
 } = require("./routes");
 
 const router = Router();
@@ -17,5 +18,6 @@ router.use("/auth", authRoutes);
 router.use("/deportistas", deportistasRoutes);
 router.use("/coordinadores", coordinadoresRoutes);
 router.use("/uploads", uploadsRoutes);
+router.use("/equipos", equipoRoutes);
 
 module.exports = router;
