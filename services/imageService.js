@@ -8,9 +8,11 @@
  /**
   * Se intenta almacenar una imagen de forma local y generarle un nombre único.
   * @param file que se va almacenar localmente.
+  * @param tipoArchivo permite saber si se admite solo pdf o img
+  * @param archivo permite saber en caso de error que archivo fue el que dio el error
   * @returns Devuelve una respuesta {ok,message,data:Url del imagen} con el resultado de la operación.
   */
- const uploadImage = async (file) => {
+ const uploadImage = async (file, tipoArchivo, archivo) => {
  
      // Validar que exista el archivo
      if (!file) {
@@ -25,12 +27,13 @@
      const fileNameSegments = file.name.split('.'); // archivo.ejemplo.ext
      const fileExtension = fileNameSegments[fileNameSegments.length - 1]; // .ext
  
-     const validateExtensions = ['png', 'jpg', 'jpeg'];
- 
+     let validateExtensions;
+     tipoArchivo == 'pdf' ? validateExtensions = ['pdf'] : validateExtensions = ['png', 'jpg', 'jpeg'];
+
      if (!validateExtensions.includes(fileExtension)) {
          return {
              ok: false,
-             message: "Tipo de archivo no permitido, sólo se permiten imágenes.",
+             message: `Tipo de archivo no permitido en ${archivo}, sólo se permite ${tipoArchivo}`,
              data: null
          };
      }
@@ -54,7 +57,7 @@
         console.log(error)
          return {
              ok: false,
-             message: "No se pudo cargar la imagen.",
+             message: `No se puede cargar ${tipoArchivo}`,
              data: null
          };
      }

@@ -47,25 +47,24 @@ exports.getDeportista = async (req,res,next) => {
 exports.postDeportista = async (req,res,next) => {
     try {
         const data = req.body
-        const subirImagen = async (imagen) =>{
+        const subirImagen = async (imagen, tipoArchivo, archivo) =>{
             // Se intenta subir la imagen
-            let response = await imagesService.uploadImage(imagen);
+            let response = await imagesService.uploadImage(imagen, tipoArchivo, archivo);
             // Algo salio mal y se le informa al usuaario
             if (!response.ok) {
-                return res.status(401).json({
-                    ok: false,
-                    message: response.message,
-                });
+                // return res.status(401).json({
+                //     ok: false,
+                //     message: response.message,
+                // });
+                throw response.message;
             }
             // El path de la imagen
             return response.data
         }
 
-   
-
-        data.fotoIdentificacionOficial = await subirImagen(req.files?.fotoIdentificacionOficial) 
-        data.foto = await subirImagen(req.files?.foto) 
-        data.fotoCardex = await subirImagen(req.files?.fotoCardex) 
+        data.fotoIdentificacionOficial = await subirImagen(req.files?.fotoIdentificacionOficial, 'pdf', 'Identifiacion Oficial');
+        data.foto = await subirImagen(req.files?.foto, 'imagen', 'Foto deportista');
+        data.fotoCardex = await subirImagen(req.files?.fotoCardex, 'pdf', 'Kardex');
 
         const deportista = await Deportista.create(data)
 
@@ -79,7 +78,7 @@ exports.postDeportista = async (req,res,next) => {
         console.log(e)
         return res.status(500).json({
             ok: false,
-            message: "Algo salio mal"
+            message: `Algo salio mal`
         });
     }
 }
