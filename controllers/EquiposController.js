@@ -52,7 +52,8 @@ exports.postEquipo = async(req,res,next) => {
 
         await Promise.all(jugadoresQuery)
         .then(async (r)=>{
-            // r.equipoId = equipo.equipoId
+            r.equipoId = equipo.equipoId
+            // console.log(r);
         })
         .catch((e)=>{
             console.log(e)
