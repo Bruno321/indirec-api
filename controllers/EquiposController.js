@@ -1,13 +1,19 @@
 const moment = require("moment/moment");
-const {Equipo,Deportista} = require("../models");
+const { Equipo,Deportista } = require("../models");
 
 // Devuelve los equipos
 exports.getEquipos = async (req,res,next) => {
     try{
         const equipos = await Equipo.findAll();
+
+        for (e of equipos) {
+            let jugadores = await Deportista.findAll({where:{equipoId:e.equipoId}})
+
+            e.dataValues.jugadores = jugadores?.length ? jugadores : [];
+        }
         return res.status(200).json({
             ok: true,
-            data: equipos
+            data: equipos,
         });
     } catch(e){
         console.log(e);
@@ -22,7 +28,11 @@ exports.getEquipos = async (req,res,next) => {
 exports.getEquipo = async (req,res,next) => {
     try{
         const{equipoId} = req.params
-        const equipo = await Equipo.findOne({where:{equipoId}})
+        const equipo = await Equipo.findOne({where:{equipoId}});
+
+        let jugadores = await Deportista.findAll({where:{equipoId:equipo.equipoId}})
+
+        equipo.dataValues.jugadores = jugadores?.length ? jugadores : [];
         return res.status(200).json({
             ok: true,
             data: equipo
@@ -85,17 +95,17 @@ exports.putEquipo = async (req,res,next) => {
         where: {equipoId : equipoId}
     }).then(num => {
         if (num == 1) {
-          res.send({
-            message: "Equipo fue editado correctamente!"
-          });
+            res.send({
+                message: "Equipo fue editado correctamente!"
+            });
         } else {
-          res.send({
+            res.send({
             message: `No existe ese equipo`
-          });
+            });
         }
-      }).catch(err => {
+        }).catch(err => {
         res.status(500).send({
-          message: "Algo salio mal"
+            message: "Algo salio mal"
         })
     });
 }
