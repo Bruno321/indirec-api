@@ -96,7 +96,8 @@ exports.putEquipo = async (req,res,next) => {
     }).then(num => {
         if (num == 1) {
             res.send({
-                message: "Equipo fue editado correctamente!"
+                message: "Equipo fue editado correctamente!",
+                ok: true
             });
         } else {
             res.send({
