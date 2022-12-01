@@ -4,16 +4,17 @@ const { Equipo,Deportista } = require("../models");
 // Devuelve los equipos
 exports.getEquipos = async (req,res,next) => {
     try{
-        const equipos = await Equipo.findAll();
+        const equipos = await Equipo.findAll({
+            attributes: ['equipoId','nombre','facultad','campus','deporte','categoria']
+        });
 
-        for (e of equipos) {
-            let jugadores = await Deportista.findAll({
-                where:{equipoId:e.equipoId},
-                attributes: ['equipoId','nombre','facultad','campus','deporte','categoria']
-            })
+        // for (e of equipos) {
+        //     let jugadores = await Deportista.findAll({
+        //         where:{equipoId:e.equipoId},
+        //     })
 
-            e.dataValues.jugadores = jugadores?.length ? jugadores : [];
-        }
+        //     e.dataValues.jugadores = jugadores?.length ? jugadores : [];
+        // }
         return res.status(200).json({
             ok: true,
             data: equipos,
@@ -59,7 +60,6 @@ exports.postEquipo = async(req,res,next) => {
         let jugadoresQuery = []
         jugadores.forEach( (e)=>{
             let updateData = {equipoId:equipo.equipoId}
-            console.log(e)
             jugadoresQuery.push(Deportista.update(updateData,{where:{deportistaId:e}}))
         })
 
@@ -89,27 +89,44 @@ exports.postEquipo = async(req,res,next) => {
     }
 }
 
-// Actualizar un equipo
+// Actualizar un equipo jugadores es param obligatorio
 exports.putEquipo = async (req,res,next) => {
-    const equipoId = req.params.equipoId;
-    console.log(equipoId);
-
-    Equipo.update(req.body, {
-        where: {equipoId : equipoId}
-    }).then(num => {
-        if (num == 1) {
-            res.send({
-                message: "Equipo fue editado correctamente!",
-                ok: true
-            });
-        } else {
-            res.send({
-            message: `No existe ese equipo`
-            });
-        }
-        }).catch(err => {
-        res.status(500).send({
-            message: "Algo salio mal"
+    try {
+        const data = req.body;
+        const jugadores = data.jugadores
+        delete data['jugadores']
+    
+        let jugadoresQuery = []
+        jugadores.forEach( (e)=>{
+            let updateData = {equipoId:data.equipoId}
+            jugadoresQuery.push(Deportista.update(updateData,{where:{deportistaId:e}}))
         })
-    });
+    
+        await Promise.all(jugadoresQuery)
+        await Equipo.update(data, {
+            where: {equipoId : data.equipoId}
+        }).then(num => {
+            if (num == 1) {
+                res.send({
+                    message: "Equipo fue editado correctamente!",
+                    ok: true
+                });
+            } else {
+                res.send({
+                message: `No existe ese equipo`
+                });
+            }
+            }).catch(err => {
+            res.status(500).send({
+                message: "Algo salio mal"
+            })
+        });
+    } catch(e){
+        console.log(e)
+        return res.status(500).json({
+            ok: false,
+            message: "Algo salió mal al registrar el Equipo"
+        });
+    }
+    
 }

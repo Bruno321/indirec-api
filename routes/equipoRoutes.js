@@ -24,7 +24,8 @@ authorization,
 EquiposController.postEquipo
 )
 
-router.put("/:equipoId",
+//Edita un equipo
+router.put("/",
 authorization,
 EquiposController.putEquipo
 )
