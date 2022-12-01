@@ -4,9 +4,7 @@ const { Equipo,Deportista } = require("../models");
 // Devuelve los equipos
 exports.getEquipos = async (req,res,next) => {
     try{
-        const equipos = await Equipo.findAll({
-            attributes: ['equipoId','nombre','facultad','campus','deporte','categoria']
-        });
+        const equipos = await Equipo.findAll();
 
         // for (e of equipos) {
         //     let jugadores = await Deportista.findAll({
