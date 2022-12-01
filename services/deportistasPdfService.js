@@ -8,7 +8,7 @@ const PdfkitConstruct = require('pdfkit-construct');
  * numberRow, apellidos, nombres, numeroJugador.
 */
 
-async function buildPDF(dataCallback, endCallback, data) {
+async function buildPDF(dataCallback, endCallback, data,equipoData) {
 
   // const deportistasArreglo = [
   //   {"numberRow": "1","apellidos": "","nombres": "","numJugador": ""},
@@ -53,10 +53,10 @@ async function buildPDF(dataCallback, endCallback, data) {
       pdf.image('assets/img/logoFisu.png', 490, 30, {width: 35})
       pdf.moveDown();
       pdf.font('Helvetica-Bold').fontSize(10).fillColor('#8C2E40').text('CONSEJO NACIONAL DEL DEPORTE DE LA EDUCACIÓN, A.C.').moveDown(0.5);
-      pdf.font('Helvetica-Bold').fontSize(18).fillColor('black').text('UNIVERSIADA NACIONAL 2021');
+      pdf.font('Helvetica-Bold').fontSize(18).fillColor('black').text(`${equipoData.facultad} ${new Date().getFullYear()}`);
       pdf.font('Helvetica').fontSize(10).fillColor('black').text('CÉDULA DE INSCRIPCIÓN');
       pdf.moveDown();
-      pdf.font('Helvetica-Bold').fontSize(18).fillColor('#8C2E40').text('FÚTBOL ASOCIACIÓN');
+      pdf.font('Helvetica-Bold').fontSize(18).fillColor('#8C2E40').text(equipoData.nombre);
       pdf.moveDown();
 
       //Creacion de la primera Tabla de los datos generales
@@ -65,7 +65,7 @@ async function buildPDF(dataCallback, endCallback, data) {
       pdf.rect(pdf.x + 144, 170, 303, 20).stroke();
       pdf.font('Helvetica').fontSize(10).fillColor('black').text(`ESTADO |`, 230, 177);
       pdf.rect(pdf.x - 158, 190, 453, 20).stroke();
-      pdf.font('Helvetica').fontSize(10).fillColor('black').text(`INSTITUCIÓN |`, 78, 197);
+      pdf.font('Helvetica').fontSize(10).fillColor('black').text(`INSTITUCIÓN |`, 78, 197); //Facultad
       pdf.rect(pdf.x - 6, 210, 200, 20).stroke();
       pdf.font('Helvetica').fontSize(10).fillColor('black').text(`SIGLA IES |`, 78, 217);
       pdf.rect(pdf.x + 194, 210, 126, 20).stroke();
@@ -109,8 +109,8 @@ async function buildPDF(dataCallback, endCallback, data) {
         {key: 'nombres',   label: '             NOMBRES              ', align: 'center'},
     ],
     [
-      {"numberRow": "ENTRENADOR(A)", "apellidos": ``, "nombres": ``,},  //Aqui es donde se debe colocar el nombre y apellido del entrenador para que se muestren en la tabla.
-      {"numberRow": "ASISTENTE", "apellidos": ``, "nombres": ``,} //Aqui es donde se debe colocar el nombre y apellido del asistente para que se muestren en la tabla.
+      {"numberRow": "ENTRENADOR(A)", "apellidos": equipoData.apellidoEntrenador, "nombres": equipoData.nombreEntrenador,},  //Aqui es donde se debe colocar el nombre y apellido del entrenador para que se muestren en la tabla.
+      {"numberRow": "ASISTENTE", "apellidos": equipoData.apellidoAsistente, "nombres":equipoData.nombreAsistente,} //Aqui es donde se debe colocar el nombre y apellido del asistente para que se muestren en la tabla.
     ], {
         width: "fill_body",
         border : {size: 0.1, color: '#707475'},

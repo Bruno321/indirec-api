@@ -1,5 +1,5 @@
 const moment = require("moment/moment");
-const { Deportista, Asistencia } = require("../models");
+const { Deportista, Asistencia, Equipo } = require("../models");
 
 const { imagesService } = require("../services");
 
@@ -90,6 +90,7 @@ exports.getDeportistasPDF = async (req,res,next) => {
         let tableData = []
         // TODO con deporte
         const deportistas = await Deportista.findAll({where:{equipoId}})
+        const equipo = await Equipo.findOne({where:{equipoId}})
         console.log(deportistas.length)
         deportistas.forEach((e,i)=>{
             console.log(e.nombres)
@@ -113,7 +114,8 @@ exports.getDeportistasPDF = async (req,res,next) => {
         buildPDF(
             (chunk) => stream.write(chunk),
             () => stream.end(),
-            tableData
+            tableData,
+            equipo
         )
     } catch(e) {
         console.log(e)

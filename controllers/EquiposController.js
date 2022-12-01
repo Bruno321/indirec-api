@@ -7,7 +7,10 @@ exports.getEquipos = async (req,res,next) => {
         const equipos = await Equipo.findAll();
 
         for (e of equipos) {
-            let jugadores = await Deportista.findAll({where:{equipoId:e.equipoId}})
+            let jugadores = await Deportista.findAll({
+                where:{equipoId:e.equipoId},
+                attributes: ['equipoId','nombre','facultad','campus','deporte','categoria']
+            })
 
             e.dataValues.jugadores = jugadores?.length ? jugadores : [];
         }
