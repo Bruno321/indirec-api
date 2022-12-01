@@ -86,8 +86,24 @@ exports.postDeportista = async (req,res,next) => {
 /* Genera el PDF dinamico de los deportistas */
 exports.getDeportistasPDF = async (req,res,next) => {
     try {
+        const {equipoId} = req.params
+        let tableData = []
         // TODO con deporte
-        const deportistas = await Deportista.findAll()
+        const deportistas = await Deportista.findAll({where:{equipoId}})
+        console.log(deportistas.length)
+        deportistas.forEach((e,i)=>{
+            console.log(e.nombres)
+            console.log(e.apellidos)
+            console.log(e.numJugador)
+            let object = {
+                numberRow: i,
+                apellidos:e.apellidos,
+                nombres:e.nombres,
+                numJugador:e.numJugador
+            }
+            tableData.push(object)
+        })
+        console.log(tableData)
         const stream = res.writeHead(200, {
             'Content-Type': 'application/pdf',
             // nombre del equipo
@@ -97,7 +113,7 @@ exports.getDeportistasPDF = async (req,res,next) => {
         buildPDF(
             (chunk) => stream.write(chunk),
             () => stream.end(),
-            deportistas
+            tableData
         )
     } catch(e) {
         console.log(e)

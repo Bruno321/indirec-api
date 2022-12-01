@@ -10,27 +10,31 @@ const PdfkitConstruct = require('pdfkit-construct');
 
 async function buildPDF(dataCallback, endCallback, data) {
 
-  const deportistasArreglo = [
-    {"numberRow": "1","apellidos": "","nombres": "","numeroJugador": ""},
-    {"numberRow": "2","apellidos": "","nombres": "","numeroJugador": ""},
-    {"numberRow": "3","apellidos": "","nombres": "","numeroJugador": ""},
-    {"numberRow": "4","apellidos": "","nombres": "","numeroJugador": ""},
-    {"numberRow": "5","apellidos": "","nombres": "","numeroJugador": ""},
-    {"numberRow": "6","apellidos": "","nombres": "","numeroJugador": ""},
-    {"numberRow": "7","apellidos": "","nombres": "","numeroJugador": ""},
-    {"numberRow": "8","apellidos": "","nombres": "","numeroJugador": ""},
-    {"numberRow": "9","apellidos": "","nombres": "","numeroJugador": ""},
-    {"numberRow": "10","apellidos": "","nombres": "","numeroJugador": ""},
-    {"numberRow": "11","apellidos": "","nombres": "","numeroJugador": ""},
-    {"numberRow": "12","apellidos": "","nombres": "","numeroJugador": ""},
-    {"numberRow": "13","apellidos": "","nombres": "","numeroJugador": ""},
-    {"numberRow": "14","apellidos": "","nombres": "","numeroJugador": ""},
-    {"numberRow": "15","apellidos": "","nombres": "","numeroJugador": ""},
-    {"numberRow": "16","apellidos": "","nombres": "","numeroJugador": ""},
-    {"numberRow": "17","apellidos": "","nombres": "","numeroJugador": ""},
-    {"numberRow": "18","apellidos": "","nombres": "","numeroJugador": ""}
-  ]
+  // const deportistasArreglo = [
+  //   {"numberRow": "1","apellidos": "","nombres": "","numJugador": ""},
+  //   {"numberRow": "2","apellidos": "","nombres": "","numJugador": ""},
+  //   {"numberRow": "3","apellidos": "","nombres": "","numJugador": ""},
+  //   {"numberRow": "4","apellidos": "","nombres": "","numJugador": ""},
+  //   {"numberRow": "5","apellidos": "","nombres": "","numJugador": ""},
+  //   {"numberRow": "6","apellidos": "","nombres": "","numJugador": ""},
+  //   {"numberRow": "7","apellidos": "","nombres": "","numJugador": ""},
+  //   {"numberRow": "8","apellidos": "","nombres": "","numJugador": ""},
+  //   {"numberRow": "9","apellidos": "","nombres": "","numJugador": ""},
+  //   {"numberRow": "10","apellidos": "","nombres": "","numJugador": ""},
+  //   {"numberRow": "11","apellidos": "","nombres": "","numJugador": ""},
+  //   {"numberRow": "12","apellidos": "","nombres": "","numJugador": ""},
+  //   {"numberRow": "13","apellidos": "","nombres": "","numJugador": ""},
+  //   {"numberRow": "14","apellidos": "","nombres": "","numJugador": ""},
+  //   {"numberRow": "15","apellidos": "","nombres": "","numJugador": ""},
+  //   {"numberRow": "16","apellidos": "","nombres": "","numJugador": ""},
+  //   {"numberRow": "17","apellidos": "","nombres": "","numJugador": ""},
+  //   {"numberRow": "18","apellidos": "","nombres": "","numJugador": ""}
+  // ]
 
+  // data.forEach((e,i)=>{
+  //   console.log(e)
+  // })
+  
   const pdf = new PdfkitConstruct({
     size: 'A4',
     // margins: {top: 60, left: 0, right: 0, bottom: 20},
@@ -79,9 +83,9 @@ async function buildPDF(dataCallback, endCallback, data) {
         {key: 'numberRow', label: '', align: 'center'},
         {key: 'apellidos', label: '             APELLIDOS             ', align: 'center'},
         {key: 'nombres',   label: '       NOMBRES        ', align: 'center'},
-        {key: 'numeroJugador', label: 'NÚMERO'},
+        {key: 'numJugador', label: 'NÚMERO'},
     ],
-    deportistasArreglo, {
+    data, {
         width: "fill_body",
         border : {size: 0.1, color: '#707475'},
         // cellsPadding: 6,
