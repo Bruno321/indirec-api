@@ -25,9 +25,9 @@ EquiposController.postEquipo
 )
 
 //Edita un equipo
-router.put("/",
+router.patch("/",
 authorization,
-EquiposController.putEquipo
+EquiposController.patchEquipo
 )
 
 module.exports = router;

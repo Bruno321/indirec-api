@@ -88,8 +88,9 @@ exports.postEquipo = async(req,res,next) => {
 }
 
 // Actualizar un equipo jugadores es param obligatorio
-exports.putEquipo = async (req,res,next) => {
+exports.patchEquipo = async (req,res,next) => {
     try {
+        console.log(req.body)
         const data = req.body;
         const jugadores = data.jugadores
         delete data['jugadores']
