@@ -47,22 +47,18 @@ exports.getDeportista = async (req,res,next) => {
 exports.postDeportista = async (req,res,next) => {
     try {
         const data = req.body
-        const subirImagen = async (imagen, tipoArchivo, archivo) =>{
+        const subirImagen = async (imagen) =>{
             // Se intenta subir la imagen
-            let response = await imagesService.uploadImage(imagen, tipoArchivo, archivo);
+            let response = await imagesService.uploadImage(imagen);
             // Algo salio mal y se le informa al usuaario
             if (!response.ok) {
-                // return res.status(401).json({
-                //     ok: false,
-                //     message: response.message,
-                // });
                 throw response.message;
             }
             // El path de la imagen
             return response.data
         }
 
-        data.fotoIdentificacionOficial = await subirImagen(req.files?.fotoIdentificacionOficial, 'pdf', 'Identifiacion Oficial');
+        data.fotoIdentificacionOficial = await subirImagen(req.files?.fotoIdentificacionOficial);
         data.foto = await subirImagen(req.files?.foto, 'imagen', 'Foto deportista');
         data.fotoCardex = await subirImagen(req.files?.fotoCardex, 'pdf', 'Kardex');
 
