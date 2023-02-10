@@ -10,7 +10,15 @@ const Op = require("sequelize").Op;
 /* Devuelve todos los deportistas */
 exports.getDeportistas = async (req,res,next) => {
     try {
-        const deportistas = await Deportista.findAll()
+        // Ejemplo de peticion {{url}}/api/deportistas?limit=10&page=1
+        const limit = parseInt(req.query.limit) || 10;
+        const page = parseInt(req.query.page - 1) || 0;
+        const pageSize = parseInt(req.query.limit);
+
+        const offset = page * limit;
+        
+        const deportistas = await Deportista.findAll({where: {}, offset, limit})
+
         return res.status(200).json({
             ok: true,
             data: deportistas
