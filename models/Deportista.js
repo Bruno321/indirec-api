@@ -1,6 +1,7 @@
 const Sequelize = require('sequelize')
 const { db } = require('../config/')
 const Equipo = require('./Equipo')
+const Evento = require('./Evento')
 
 const Deportista = db.define('deportista', {
     deportistaId: {
@@ -44,6 +45,9 @@ Deportista.belongsTo(Equipo,{
         name: 'equipoId',
         allowNull: true
     }
-})
+});
+
+Evento.belongsToMany(Deportista, { through: 'evento_deportista'});
+Deportista.belongsToMany(Evento, {through: 'evento_deportista'});
 
 module.exports = Deportista;
