@@ -8,9 +8,19 @@ const router = Router();
 const {eventosController} = require("../controllers");
 const {authorization} = require("../middlewares");
 
+/**
+ * Devuelve todos los eventos
+ */
 router.get("/", 
     authorization, 
-    eventosController.getEvento);
+    eventosController.getEventos);
+
+/*
+* Devuelve un evento 
+*/
+router.get("/:eventoId", 
+    authorization, 
+    eventosController.getEvento)
 
 /**
  * Registra un evento

@@ -47,7 +47,4 @@ Deportista.belongsTo(Equipo,{
     }
 });
 
-Evento.belongsToMany(Deportista, { through: 'evento_deportista'});
-Deportista.belongsToMany(Evento, {through: 'evento_deportista'});
-
 module.exports = Deportista;
