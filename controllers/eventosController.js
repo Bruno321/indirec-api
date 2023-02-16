@@ -5,7 +5,11 @@ const {Evento, Deportista} = require("../models");
  */
 exports.getEventos = async(req, res) => {
     try{
-        const eventos = await Evento.findAll();
+        const eventos = await Evento.findAll({
+            include: {
+                model: Deportista
+            }
+        });
         return res.status(200).json({
             ok: true,
             data: eventos
