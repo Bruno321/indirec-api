@@ -9,7 +9,7 @@ exports.getEventos = async(req, res) => {
             include: [
                 {
                     model: Deportista,
-                    attributes: ['deportistaId','nombres', 'apellidos']
+                    attributes: ['deportistaId','nombres', 'apellidos', 'equipoId']
                 },
                 {
                     model: Equipo,
@@ -37,7 +37,7 @@ exports.getEvento = async(req, res) => {
             include: [
                 {
                     model: Deportista,
-                    attributes: ['deportistaId','nombres', 'apellidos']
+                    attributes: ['deportistaId','nombres', 'apellidos', 'equipoId']
                 },
                 {
                     model: Equipo,
