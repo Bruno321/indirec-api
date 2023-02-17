@@ -9,9 +9,11 @@ exports.getEventos = async(req, res) => {
             include: [
                 {
                     model: Deportista,
+                    attributes: ['deportistaId','nombres', 'apellidos']
                 },
                 {
-                    model: Equipo
+                    model: Equipo,
+                    attributes: ['equipoId','nombre']
                 },
             ],
         });
@@ -35,9 +37,11 @@ exports.getEvento = async(req, res) => {
             include: [
                 {
                     model: Deportista,
+                    attributes: ['deportistaId','nombres', 'apellidos']
                 },
                 {
-                    model: Equipo
+                    model: Equipo,
+                    attributes: ['equipoId','nombre']
                 },
             ],
             where: {eventoId}
