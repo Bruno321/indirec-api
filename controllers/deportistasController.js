@@ -154,6 +154,7 @@ exports.getAsistencia = async (req,res,next) => {
 /* Registra una asistencia */
 exports.postAsistencia = async (req,res,next) => {
     try {
+        console.log(req.body)
         const {id,fecha} = req.body;
         //la Id del deportista sea la del que solicita
         //la fecha sea de hoy, hay que ver en q formato viene la fecha para poder parsearla y compararla
