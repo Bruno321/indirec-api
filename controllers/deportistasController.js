@@ -5,10 +5,20 @@ const { imagesService } = require("../services");
 
 const { buildPDF } = require("../services/deportistasPdfService");
 
+const Op = require("sequelize").Op;
+
 /* Devuelve todos los deportistas */
 exports.getDeportistas = async (req,res,next) => {
     try {
-        const deportistas = await Deportista.findAll()
+        // Ejemplo de peticion {{url}}/api/deportistas?limit=10&page=1
+        const limit = parseInt(req.query.limit) || 10;
+        const page = parseInt(req.query.page - 1) || 0;
+        const pageSize = parseInt(req.query.limit);
+
+        const offset = page * limit;
+        
+        const deportistas = await Deportista.findAll({where: {}, offset, limit})
+
         return res.status(200).json({
             ok: true,
             data: deportistas
@@ -144,20 +154,34 @@ exports.getAsistencia = async (req,res,next) => {
 /* Registra una asistencia */
 exports.postAsistencia = async (req,res,next) => {
     try {
-        const {id,fecha} = req.body
+        const {id,fecha} = req.body;
         //la Id del deportista sea la del que solicita
         //la fecha sea de hoy, hay que ver en q formato viene la fecha para poder parsearla y compararla
-        //usar local time?
         //PARSEAR FECHA
-        console.log(id,fecha)
-        let parsedFecha = moment(fecha).format('YYYY-MM-DD')
-        let parsedDateTime = parsedFecha + ' ' + moment(fecha).format('HH:mm:ss')
-        // console.log(parsedDateTime)
-        const asistencia = await Asistencia.findOne({where:{deportistaId:id,fecha:parsedFecha}})
-        const deportista = await Deportista.findOne({where:{deportistaId:id},attributes:['nombres','apellidos','foto']})
+        const parsedFecha = moment(fecha).format('YYYY-MM-DD');
+        const parsedDateTime = parsedFecha + ' ' + moment(fecha).format('HH:mm:ss');
+
+        const asistencia = await Asistencia.findOne({
+            where:{
+                deportistaId:id,
+                horaEntrada: {
+                    [Op.not]: null
+                },
+                fecha: parsedFecha,
+                horaSalida: null,
+            }
+        });
+        const deportista = await Deportista.findOne({
+            where:{
+                deportistaId:id
+            },
+            attributes:['nombres','apellidos','foto']
+        });
+
+
         //No existe por lo tanto esta registrando hora de entrada y hay que crear el elemento
-        if(!asistencia){
-            await Asistencia.create({deportistaId:id,horaEntrada:parsedDateTime})
+        if (!asistencia){
+            await Asistencia.create({ deportistaId:id,horaEntrada:parsedDateTime })
             return res.status(200).json({
                 ok: true,
                 message:"Hora de entrada registrada correctamente",
@@ -166,7 +190,8 @@ exports.postAsistencia = async (req,res,next) => {
         }
         //Ya existe por lo tanto esta registrando hora de salida  y hay que editar el elemento
         else {
-            if(asistencia.horaSalida===null){
+            if(!asistencia.horaSalida){
+                console.log("TODAY ASISTENCIA SALIDA SE SUPONE");
                 asistencia.horaSalida = parsedDateTime
                 await asistencia.save()
                 return res.status(200).json({
@@ -174,19 +199,11 @@ exports.postAsistencia = async (req,res,next) => {
                     message:"Hora de salida registrada correctamente",
                     deportista
                 });
-            //Ya fueron registradas las horas posibles
-            }else{
-                return res.status(400).json({
-                    ok: false,
-                    message:"La hora de entrada y salida ya fueron registradas"
-                });
             }
         }
-       
-        
 
     } catch(e){
-        console.log(e)
+        console.log("\n\n\nERROR-->\n\n\n", e);
         return res.status(500).json({
             ok: false,
             message: "Algo salio mal"

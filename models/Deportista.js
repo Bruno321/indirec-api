@@ -1,6 +1,7 @@
 const Sequelize = require('sequelize')
 const { db } = require('../config/')
 const Equipo = require('./Equipo')
+const Evento = require('./Evento')
 
 const Deportista = db.define('deportista', {
     deportistaId: {
@@ -44,6 +45,6 @@ Deportista.belongsTo(Equipo,{
         name: 'equipoId',
         allowNull: true
     }
-})
+});
 
 module.exports = Deportista;

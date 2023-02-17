@@ -9,7 +9,8 @@ const {
 	deportistasRoutes,
 	coordinadoresRoutes,
 	uploadsRoutes,
-	equipoRoutes
+	equipoRoutes,
+	eventosRoutes
 } = require("./routes");
 
 const router = Router();
@@ -19,5 +20,6 @@ router.use("/deportistas", deportistasRoutes);
 router.use("/coordinadores", coordinadoresRoutes);
 router.use("/uploads", uploadsRoutes);
 router.use("/equipos", equipoRoutes);
+router.use("/eventos", eventosRoutes);
 
 module.exports = router;
