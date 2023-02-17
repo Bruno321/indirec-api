@@ -1,4 +1,4 @@
-const {Evento, Deportista} = require("../models");
+const {Evento, Deportista, Equipo} = require("../models");
 
 /**
  * Devuelve todos los eventos
@@ -6,9 +6,14 @@ const {Evento, Deportista} = require("../models");
 exports.getEventos = async(req, res) => {
     try{
         const eventos = await Evento.findAll({
-            include: {
-                model: Deportista
-            }
+            include: [
+                {
+                    model: Deportista,
+                },
+                {
+                    model: Equipo
+                },
+            ],
         });
         return res.status(200).json({
             ok: true,
@@ -27,9 +32,14 @@ exports.getEvento = async(req, res) => {
     try{
         const {eventoId} = req.params;
         const evento = await Evento.findOne({
-            include: {
-                model: Deportista,
-            },
+            include: [
+                {
+                    model: Deportista,
+                },
+                {
+                    model: Equipo
+                },
+            ],
             where: {eventoId}
         });
         
@@ -54,6 +64,8 @@ exports.postEvento = async (req, res) => {
         const data = req.body;
         const evento = await Evento.create(data);
         await evento.addDeportista(data.jugadores); //Se agregan los deportistas que formaran parte del evento.
+        await evento.addEquipo(data.equipoLocal);
+        await evento.addEquipo(data.equipoVisitante);
 
         return res.status(200).json({
             ok: true,

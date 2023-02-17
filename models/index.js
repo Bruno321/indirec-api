@@ -6,6 +6,8 @@ const Evento = require('./Evento');
 
 Evento.belongsToMany(Deportista, { through: 'evento_deportista'});
 Deportista.belongsToMany(Evento, {through: 'evento_deportista'});
+Evento.belongsToMany(Equipo, {through: 'equipo_deportista'});
+Equipo.belongsToMany(Evento, {through: 'equipo_deportista'});
 
 module.exports = {
     Deportista,
