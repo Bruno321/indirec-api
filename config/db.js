@@ -4,7 +4,7 @@ const Sequelize = require('sequelize');
 const db = new Sequelize('indereq', 'root', '', {
     host: 'localhost',
     dialect: 'mysql',
-    port: 3308,
+    port: 3306,
     define: {
         timestamps: false
     },

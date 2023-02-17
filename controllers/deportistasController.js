@@ -150,7 +150,6 @@ exports.postAsistencia = async (req,res,next) => {
         //usar local time?
         //PARSEAR FECHA
         console.log(id,fecha)
-        console.log(req.body)
         let parsedFecha = moment(fecha).format('YYYY-MM-DD')
         let parsedDateTime = parsedFecha + ' ' + moment(fecha).format('HH:mm:ss')
         // console.log(parsedDateTime)

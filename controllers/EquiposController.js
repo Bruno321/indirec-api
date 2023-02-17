@@ -104,17 +104,11 @@ exports.patchEquipo = async (req,res,next) => {
         await Promise.all(jugadoresQuery)
         await Equipo.update(data, {
             where: {equipoId : data.equipoId}
-        }).then(num => {
-            if (num == 1) {
+        }).then(()=>{
                 res.send({
                     message: "Equipo fue editado correctamente!",
                     ok: true
-                });
-            } else {
-                res.send({
-                message: `No existe ese equipo`
-                });
-            }
+                })
             }).catch(err => {
             res.status(500).send({
                 message: "Algo salio mal"
