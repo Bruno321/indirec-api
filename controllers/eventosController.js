@@ -84,3 +84,33 @@ exports.postEvento = async (req, res) => {
         })
     }
 }
+
+
+// Actualizar eventos (para poder registrar resultados desde el front)
+exports.patchEvento = async (req,res,next) => {
+    try {
+        
+        const data = req.body;
+        console.log(data)
+
+        await Evento.update(data, {
+            where: {eventoId : data.eventoId}
+        }).then(()=>{
+                res.send({
+                    message: "Evento fue editado correctamente!",
+                    ok: true
+                })
+            }).catch(err => {
+            res.status(500).send({
+                message: "Algo salio mal"
+            })
+        });
+    } catch(e){
+        console.log(e)
+        return res.status(500).json({
+            ok: false,
+            message: "Algo salió mal al editar el evento"
+        });
+    }
+    
+}

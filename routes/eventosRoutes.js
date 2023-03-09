@@ -29,4 +29,10 @@ router.post("/",
     authorization,
     eventosController.postEvento);
 
+// Editar/registrar resultados de evento
+router.patch("/:eventoId",
+authorization,
+eventosController.patchEvento
+)
+
 module.exports = router;
